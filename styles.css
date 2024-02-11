@@ -1,0 +1,62 @@
+body{
+    color: #FFF;
+    background-color: #222;
+    margin: 10PX;
+}
+#searchForm{
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.buttom{
+  display: inline-block;
+  background-color:transparent;
+  color: #f2f2f2;
+  margin: 20px 30px 20px 20px;
+  width: 120px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.buttom a:hover{
+  background-color: #000;
+}
+
+.buttons{
+  display: inline-block;
+  margin: 10px auto;
+}
+
+table{
+  font-size: 20px;
+  color: #29999233;
+  margin: 10px;
+  padding: 15px;
+  padding-left: 40px;
+  border-collapse: collapse;
+  width: 99%;
+}
+
+td{
+  text-align: left;
+  padding: 8px;
+  margin: 20px;
+}
+
+th {
+  background:linear-gradient( #22227299, #299992, #212);
+  color: aliceblue;
+  text-align: left;
+  padding: 8px;
+  margin: 20px;
+}
+
+tr:nth-child(even) {
+  background-color: gainsboro;
+}
+
+.cabecalho{
+  background-color: #51515133;
+  color: orangered;
+  border-radius: 5px;
+}
