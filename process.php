@@ -2,6 +2,14 @@
 
 class CalculaTributo{
 
+    private $Process;
+
+    public function __construct() {
+
+        $this->Process = new FunctionDAO(Conection::getConnection());
+
+    }
+
 }
     $produto        =   $_POST['produto'];
     $quantidade     =   $_POST['quantidade'];
@@ -95,6 +103,27 @@ $json = json_encode($data);
 $file = fopen(__DIR__ . '/' . $arquivoSaida, 'w');
 fwrite($file, $json);
 fclose($file);
+
+
+
+$dataBd = array(
+    array(
+                
+                "produto"=> $produto,
+                "quantidade"=> $quantidade,
+                "valorProduto"=> number_format($valorProduto,2),
+                "estado" => $estado, 
+                "substituicao"=> $substituicao,
+		        "recolhimento" => number_format($recolhimento,2)
+    )
+);
+
+        $arquivoSaida = 'dataBd.json';
+        $json = json_encode($dataBd);
+
+        $file = fopen(__DIR__ . '/' . $arquivoSaida, 'w');
+        fwrite($file, $json);
+        fclose($file);
 
 ?>
 

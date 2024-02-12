@@ -1,40 +1,40 @@
 <?php
 
-require_once('../utils/Conexao.php');
-require_once('../dao/Fluxo_caixaDAO.php');
+require_once('conexaoBd.php');
+require_once('functionDAO.php');
 
 
-class Fluxo_caixaController {
+class Controller {
 
-    private $Fluxo_caixaDAO;
+    private $FunctionDAO;
 
     public function __construct() {
 
-        $this->Fluxo_caixaDAO = new Fluxo_caixaDAO(Conexao::getConnection());
+        $this->FunctionDAO = new FunctionDAO(Conection::getConnection());
 
     }
 
-    public function criarFluxo($tipo, $valor, $data, $descricao) {
+    public function criarFluxo ($produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento) {
 
-        return $this->Fluxo_caixaDAO->create($tipo, $valor, $data, $descricao);
-
-    }
-
-    public function buscarFluxo($tipo, $valor, $data, $descricao) {
-
-        return $this->Fluxo_caixaDAO->read($tipo, $valor, $data, $descricao);
+        return $this->FunctionDAO->createDados($produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento);
 
     }
 
-    public function atualizarFluxo($id, $tipo, $valor, $data, $descricao) {
+    public function buscarFluxo($produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento) {
 
-        return $this->Fluxo_caixaDAO->update($id, $tipo, $valor, $data, $descricao);
+        return $this->FunctionDAO->readDados($produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento);
+
+    }
+
+    public function atualizarFluxo($produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento) {
+
+        return $this->FunctionDAO->updateDados($produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento);
 
     }
 
     public function deletarFluxo($id) {
 
-       return $this->Fluxo_caixaDAO->delete($id);
+       return $this->FunctionDAO->destroyDados($id);
 
     }
 }

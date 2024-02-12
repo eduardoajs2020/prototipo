@@ -63,64 +63,46 @@
         <br>
         <br>
 
-    <div class="buttons">
-        <input class="buttom" type="submit" value="Pesquisar">
-        <input class="buttom" name="CadSentenca" type="submit" value="Cadastrar">
-        <input class="buttom" name="AltSentenca" type="submit" value="Alterar">
-        <input class="buttom" name="DelSentenca" type="submit" value="Excluir">
-        <input class="buttom" name="ListaSentenca" type="submit" value="Lista Todas">
+    <div class="buttons" id="buttons">
+        <input class="buttom" id="Pesquisar" type="submit" value="Pesquisar">
+        <input class="buttom" name="CadSentenca" id="CadSentenca" type="submit" value="Cadastrar">
+        <input class="buttom" name="AltSentenca" id="AltSentenca" type="submit" value="Alterar">
+        <input class="buttom" name="DelSentenca" id="DelSentenca" type="submit" value="Excluir">
+        <input class="buttom" name="ListaSentenca" id="ListaSentenca"type="submit" value="Lista Todas">
     </div>
     </form>
 
     <div id="resultado"></div>
      
     <script> 
-    // Muda a cor do texto:
-    var stBody = document.getElementById('searchForm');
+    // Muda o estilo do elemento:
+    
+
+    let stBody = document.getElementById('searchForm');
         stBody.style.backgroundColor = 'blue';
         stBody.style.fontSize = '20px';
         stBody.style.fontFamily = 'arial';
+        stBody.style.margin = '5px';
+        stBody.style.padding = '20px';
+
+    
         
-   /* var intervalo = window.setInterval(function(){
-        if (stBody.style.visibility === 'hidden'){
-            stBody.style.visibility = 'visible';
-        }else{
-            stBody.style.visibility = 'hidden';
-        }
-
-    }, 500); */
-
-    var stTitle =  document.getElementsByTagName('body');
-        stTitle.style.color = 'red';
-
-    var stResponse =  document.getElementsByClassName('buttons');
-        stResponse.style.backgroundColor = 'yellow';
-
-    var intervalo = window.setInterval(function(){
-        if (stResponse.style.visibility === 'hidden'){
-            stResponse.style.visibility = 'visible';
-        }else{
-            stResponse.style.visibility = 'hidden';
-        }
-
-    }, 500);
-
-          
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+
+     <script>
         $(document).ready(function() {
+            // Função para realizar a pesquisa
             $('#searchForm').submit(function(e) {
                 e.preventDefault();
 
-                var produto         =   $('#produto').val();
-                var quantidade      =   $('#quantidade').val();
-                var valorProduto    =   $('#valorProduto').val();
-                var estado          =   $('#estado').val();
-                var substituicao    =   $('#substituicao').val();
+                let produto         = $('#produto').val();
+                let quantidade      = $('#quantidade').val();
+                let valorProduto    = $('#valorProduto').val();
+                let estado          = $('#estado').val();
+                let substituicao    = $('#substituicao').val();
                   
-
                 $.ajax({
                     type: 'POST',
                     url: 'process.php',
@@ -134,7 +116,6 @@
                     success: function(response) {
                         $('#resultado').html(response);
                         alert("Sucesso na Execução!");
-                         
                     },
                     error: function() {
                         $('#resultado').html('Erro ao realizar a pesquisa.');
@@ -142,57 +123,60 @@
                     
                 });
             });
-        });
 
-        function loadRecords() {
-            $.ajax({
-                url: '/api/records',
-                type: 'GET',
-                success: function(records) {
-                    $('#recordList').empty();
-                    records.forEach(function(record) {
-                        $('#recordList').append('<li>' + record.name + ': ' + record.description + '</li>');
-                    });
-                },
-                error: function(error) {
-                    console.error('Erro ao carregar registros:', error);
-                }
+            // Função para adicionar um novo registro
+            $('#searchForm').submit(function(event) {
+                event.preventDefault();
+                
+                let formData = {
+                    id: $('#id').val(),
+                    produto: $('#produto').val(),
+                    quantidade: $('#quantidade').val(),
+                    valorProduto: $('#valorProduto').val(),
+                    estado: $('#estado').val(),
+                    substituicao: $('#substituicao').val()
+                    
+                };
+
+                $.ajax({
+                    url: 'controller.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function() {
+                        loadRecords();
+                        $('#id, #produto, #quantidade, #valorProduto, #estado, #substituicao').val('');
+                    },
+                    error: function(error) {
+                        console.error('Erro ao adicionar registro:', error);
+                    }
+                });
             });
-        }
 
-        // Adicionar um novo registro
-        $('#addForm').submit(function(event) {
-            event.preventDefault();
-            
-            var formData = {
-                name: $('#name').val(),
-                description: $('#description').val()
-            };
+            // Função para carregar registros
+            function loadRecords() {
+                $.ajax({
+                    url: 'controller.php',
+                    type: 'GET',
+                    success: function(records) {
+                        $('#ListaSentenca').empty();
+                        records.forEach(function(record) {
+                            $('#ListaSentenca').append('<li>' + record.name + ': ' + record.description + '</li>');
+                        });
+                    },
+                    error: function(error) {
+                        console.error('Erro ao carregar registros:', error);
+                    }
+                });
+            }
 
-            $.ajax({
-                url: '/api/records',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(formData),
-                success: function() {
-                    loadRecords();
-                    $('#name, #description').val('');
-                },
-                error: function(error) {
-                    console.error('Erro ao adicionar registro:', error);
-                }
+            // Inicialização da página carregando os registros
+            $(document).ready(function() {
+                loadRecords();
             });
-        });
-
-        // Carregar registros ao carregar a página
-        $(document).ready(function() {
-            loadRecords();
         });
     </script>
+    
     <link rel="stylesheet" href="styles.css">
 </body>
-
-<?php
-  //require_once("templates/footer.php");
-  ?>
 </html>

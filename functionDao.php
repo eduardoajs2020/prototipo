@@ -3,14 +3,13 @@
 require_once('conexaoBd.php');
 
 
-class ConectionsDao{
+class FunctionDAO{
 
     private $connection;
     public function __construct($connection){
     $this->connection = $connection;
-    }
 
-}
+    }
 
 
 
@@ -48,7 +47,26 @@ function createDados($produto, $quantidade, $valorProduto, $estado, $substituica
 
     if ($stmt->execute()) {
 
-        echo "Produto cadastrado com sucesso!";
+    $dataBd = array(
+    array(
+                
+                "produto"=> $produto,
+                "quantidade"=> $quantidade,
+                "valorProduto"=> number_format($valorProduto,2),
+                "estado" => $estado, 
+                "substituicao"=> $substituicao,
+		        "recolhimento" => number_format($recolhimento,2)
+    )
+);
+
+        $arquivoSaida = 'dataBd.json';
+        $json = json_encode($dataBd);
+
+        $file = fopen(__DIR__ . '/' . $arquivoSaida, 'w');
+        fwrite($file, $json);
+        fclose($file);
+
+echo "Produto cadastrado com sucesso!";
 
     } else {
 
@@ -184,7 +202,7 @@ function destroyDados($id){
 }
 
 
-
+}
 
 
 ?>

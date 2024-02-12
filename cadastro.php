@@ -1,20 +1,35 @@
 <?php
 session_start();
 
-include_once('../routes/ClientesController.php');
-require_once('../utils/Conexao.php');
+require_once('controller.php');
+require_once('conexaoBd.php');
+
+class Cadastro{
+
+    private $cadastro;
+
+    public function __construct() {
+
+        $this->cadastro = new Cadastro(Conection::getConnection());
+
+    }
+}
+
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $id = $_POST["id"] ?? null;
-    $nome = $_POST["nome"];
-    $cpf = $_POST["cpf"];
-    $email = $_POST["email"];
-    $telefone = $_POST["telefone"];
-    $endereco = $_POST["endereco"];
+    $id             =   $_POST["id"] ?? null;
+    $produto        =   $_POST['produto'];
+    $quantidade     =   $_POST['quantidade'];
+    $valorProduto   =   $_POST['valorProduto'];
+    $estado         =   $_POST['estado'];
+    $substituicao   =   $_POST['substituicao'];
 
 
-    $clientesController = new ClientesController();
+
+    $cadastro = new Cadastro();
 
     // Chamada dos métodos do ClientesController
 
@@ -22,30 +37,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset ($CadSentenca)) {
 
-        $clientesController->criarCliente($id, $nome, $cpf, $email, $telefone, $endereco);
+        $controller->createDados($id, $produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento);
     }
 
     $ListaSentenca = filter_input(INPUT_POST, 'ListaSentenca');
 
     if (isset ($ListaSentenca)) {
 
-        $clientesController->buscarCliente($id, $nome, $cpf, $email, $telefone, $endereco);
+        $controller->readDados($id, $produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento);
     }
 
     $AltSentenca = filter_input(INPUT_POST, 'AltSentenca');
 
     if (isset($AltSentenca)) {
 
-         $clientesController->atualizarCliente($id, $nome, $cpf, $email, $telefone, $endereco);
+         $controller->updateDados($id, $produto, $quantidade, $valorProduto, $estado, $substituicao, $recolhimento);
     }
 
     $DelSentenca = filter_input(INPUT_POST, 'DelSentenca');
 
     if (isset ($DelSentenca)) {
 
-        $clientesController->deletarCliente($id);
+        $controller->destroyDados($id);
     }
 
 }
+
 
 ?>
